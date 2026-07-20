@@ -3,7 +3,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 from config import MONGO_URL, DB_NAME
 
-client = AsyncIOMotorClient(MONGO_URL)
+# serverSelectionTimeoutMS corto: fallar rápido si Mongo no responde (no colgar
+# el arranque ni las requests 30s por defecto).
+client = AsyncIOMotorClient(MONGO_URL, serverSelectionTimeoutMS=5000)
 db = client[DB_NAME]
 
 # Colecciones

@@ -4,7 +4,7 @@ import { Text, Card, Chip, ActivityIndicator, Button, ProgressBar } from 'react-
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import * as FileSystem from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 
 import DomoHeader from '@/components/DomoHeader';

@@ -1,0 +1,21 @@
+# Blueprint de Render — despliegue de un clic.
+# En Render: New + → Blueprint → conecta este repo. Render lee este archivo.
+# Requiere una variable MONGO_URL (cadena de conexión de MongoDB Atlas).
+services:
+  - type: web
+    name: domo-constructora
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: MONGO_URL
+        sync: false # se ingresa a mano (cadena de MongoDB Atlas)
+      - key: DB_NAME
+        value: domo_constructora
+      - key: JWT_SECRET
+        generateValue: true # Render genera un secreto aleatorio
+      - key: JWT_EXPIRE_DAYS
+        value: "7"
+      - key: ADMIN_EMAIL
+        value: domo.sas.inmobiliaria@gmail.com

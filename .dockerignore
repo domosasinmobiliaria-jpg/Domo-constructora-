@@ -1,0 +1,14 @@
+**/node_modules
+**/.expo
+**/dist
+**/web-build
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+.git
+.gitignore
+*.md
+!README.md
+**/.env
+tests

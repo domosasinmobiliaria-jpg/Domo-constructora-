@@ -5,13 +5,24 @@ import * as SecureStore from 'expo-secure-store';
 const TOKEN_KEY = 'domo_token';
 
 function resolveBaseUrl(): string {
+  // 1) Variable explícita (útil en desarrollo web: EXPO_PUBLIC_API_URL=http://localhost:8000).
+  const fromEnv = process.env.EXPO_PUBLIC_API_URL;
+  if (fromEnv) return fromEnv.replace(/\/$/, '');
+
+  // 2) En web servido desde el mismo host que el backend (despliegue de un solo
+  //    servicio), usar el mismo origen: /api pega contra el mismo servidor.
+  // @ts-ignore
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    // @ts-ignore
+    return String(window.location.origin).replace(/\/$/, '');
+  }
+
+  // 3) Fallback (móvil nativo): valor de app.json → extra.apiUrl.
   const extra =
     (Constants.expoConfig?.extra as any) ||
     (Constants.manifest2?.extra as any) ||
     {};
-  const fromEnv = process.env.EXPO_PUBLIC_API_URL;
-  const url = fromEnv || extra.apiUrl || 'http://localhost:8000';
-  return url.replace(/\/$/, '');
+  return String(extra.apiUrl || 'http://localhost:8000').replace(/\/$/, '');
 }
 
 export const API_BASE = resolveBaseUrl();

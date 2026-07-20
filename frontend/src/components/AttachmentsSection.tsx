@@ -3,7 +3,7 @@ import { View, StyleSheet, Alert, Linking } from 'react-native';
 import { Text, Button, List, IconButton, ActivityIndicator } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system/legacy';
+import * as FileSystem from 'expo-file-system';
 
 import { colors } from '@/constants/colors';
 import { api, attachmentContentUrl, getToken, API_URL } from '@/utils/api';

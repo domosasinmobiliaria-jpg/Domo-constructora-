@@ -75,8 +75,61 @@ La URL del backend se lee de `app.json` (`extra.apiUrl`) o de la variable
 `EXPO_PUBLIC_API_URL`. Nunca se hardcodea en el código.
 
 ```bash
-# Ejemplo apuntando a un backend en la red local
+# Ejemplo apuntando a un backend en la red local (celular con Expo Go)
 EXPO_PUBLIC_API_URL=http://192.168.1.50:8000 npx expo start
+
+# Para desarrollo en el NAVEGADOR (web), apunta al backend local:
+EXPO_PUBLIC_API_URL=http://localhost:8000 npx expo start --web
+```
+
+> En el despliegue de la nube no se define `EXPO_PUBLIC_API_URL`: la web usa
+> automáticamente el mismo origen del servidor (`/api`), por eso funciona con
+> una sola URL.
+
+---
+
+## Despliegue en la nube (una sola URL)
+
+La app se despliega como **un solo servicio**: el servidor FastAPI sirve también
+la app web de Expo, así que obtienes **un único enlace público** que abre la app
+ya funcionando. El `Dockerfile` compila la web (`expo export`) y la sirve junto
+con la API.
+
+### Paso 1 — Base de datos gratis (MongoDB Atlas)
+
+1. Crea una cuenta en <https://www.mongodb.com/cloud/atlas/register> (gratis).
+2. Crea un clúster **M0 (Free)**.
+3. En *Database Access* crea un usuario con contraseña.
+4. En *Network Access* agrega `0.0.0.0/0` (permitir desde cualquier IP).
+5. En *Connect → Drivers* copia la cadena de conexión, del tipo:
+   `mongodb+srv://usuario:clave@cluster0.xxxx.mongodb.net/?retryWrites=true&w=majority`
+
+### Paso 2 — Publicar en Render (un clic)
+
+1. Sube este repositorio a tu GitHub (ya está en
+   `domosasinmobiliaria-jpg/Domo-constructora-`).
+2. Crea una cuenta gratis en <https://render.com> y conéctala a GitHub.
+3. **New + → Blueprint**, elige este repositorio. Render lee `render.yaml`.
+4. Cuando lo pida, pega la variable **`MONGO_URL`** (la cadena de Atlas del paso 1).
+   `JWT_SECRET` se genera solo; las demás ya vienen configuradas.
+5. Clic en **Apply / Deploy** y espera a que termine el build.
+6. Render te da una URL como `https://domo-constructora.onrender.com` →
+   **ese es tu enlace**. Ábrelo y regístrate con
+   `domo.sas.inmobiliaria@gmail.com` para entrar como administrador.
+
+> El plan Free de Render "duerme" el servicio tras inactividad: el primer acceso
+> del día puede tardar ~30–60 s en despertar. Para uso continuo, sube al plan
+> pago más económico.
+
+### Alternativa — Docker en cualquier servidor
+
+```bash
+docker build -t domo-constructora .
+docker run -p 8000:8000 \
+  -e MONGO_URL="mongodb+srv://usuario:clave@cluster0.xxxx.mongodb.net/..." \
+  -e JWT_SECRET="una-clave-larga-y-secreta" \
+  domo-constructora
+# App + API en http://localhost:8000
 ```
 
 ---
