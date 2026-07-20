@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "DOMO Constructora",
+    "slug": "domo-constructora",
+    "version": "2.0.0",
+    "orientation": "portrait",
+    "scheme": "domo",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#1A3A6B"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.domo.constructora"
+    },
+    "android": {
+      "package": "com.domo.constructora",
+      "adaptiveIcon": {
+        "backgroundColor": "#1A3A6B"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-image-picker",
+      "expo-document-picker"
+    ],
+    "extra": {
+      "apiUrl": "http://localhost:8000"
+    }
+  }
+}
